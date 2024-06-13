@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <p id="entrees"></p>
 </head>
 <body>
 
@@ -16,7 +17,7 @@
       <br>
       <ul>
      {{#each entree}} 
-        <li> {{nom}} {{prenom}}  </li>
+        <li> {{entree.nom}} {{entree.prenom}} - {{entree.departement}}</li>
      {{/each}}
       </ul>
     </p>

@@ -1,7 +1,13 @@
-import { basePathsApi } from "./const";
-console.log('k');
-fetch(basePathsApi+'entrees').then(ent => 
-    ent.json().then( ent => {
-        console.log(ent);
+import { loadEntrees } from "./loader";
+import { displayEntrees } from "./ui";
+
+let getEntrees = function () {
+    entrees = loadEntrees();
+    entrees.then(ent => {
+        ent.json().then( ent => {
+            displayEntrees(ent)
+        })
     })
-)
+}
+
+getEntrees()
