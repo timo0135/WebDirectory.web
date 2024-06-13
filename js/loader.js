@@ -1,0 +1,1 @@
+//Fonctions qui récupèrent les infos de l'API
