@@ -9,3 +9,15 @@
 </body>
 <script defer type ="module" src="./dist/index.js"></script>
 </html>
+
+<script id="listeEntrees" type="text/x-handlebars-template">
+    <p id="lentrees"> 
+      <h2> Entrées : </h2>
+      <br>
+      <ul>
+     {{#each entree}} 
+        <li> {{nom}} {{prenom}}  </li>
+     {{/each}}
+      </ul>
+    </p>
+  </script>
