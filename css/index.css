@@ -1,0 +1,66 @@
+/* Style général de la page */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.header {
+    grid-area: header;
+    background-color: #006b7e;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+/* Style de la barre de recherche */
+#searchBar {
+    width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Conteneur pour la liste */
+.list-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Style de la liste */
+ul {
+    list-style-type: none; /* Retirer les puces */
+    padding: 0;
+    margin: 0;
+}
+
+/* Style des éléments de la liste */
+li {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+/* Effet au survol des éléments de la liste */
+li:hover {
+    background-color: #f9f9f9;
+}
+
+/* Style pour le texte des éléments de la liste */
+.list-item-text {
+    font-size: 18px;
+}
+
+/* Style pour les éléments masqués (lors du filtrage) 
+.hidden {
+    display: none;
+}*/
