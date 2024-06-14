@@ -11,6 +11,24 @@ let getEntrees = function (path) {
         })
     })
 }
+let getDepartement = function () {
+    let departements = loadDepartements();
+    departements.then(dep => {
+        dep.json().then( dep => {
+            displayDepartements(dep)
+        })
+    })
+}
+let getEntreesByDepartement = function (departementId) {
+    let entrees = loadEntreesByDepartement(departementId);
+    console.log(entrees)
+    entrees.then(ent => {
+        ent.json().then( ent => {
+            displayEntreesByDepartement(ent)
+        })})
+
+}
+
 let searchBar = document.getElementById('search');
 searchBar.addEventListener("input", (event) => {
     if (event.target.value === '') {
@@ -23,6 +41,6 @@ searchBar.addEventListener("input", (event) => {
             })
         })
     }
-    
+
 });
 getEntrees()
