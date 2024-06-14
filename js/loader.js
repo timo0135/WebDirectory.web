@@ -1,10 +1,7 @@
 //Fonctions qui récupèrent les infos de l'API
-export {loadEntrees}
-export {loadDepartements}
-export {loadEntreesByDepartement}
+
 import {basePathsApi} from "./const";
-export {loadEntrees, loadByName}
-import { basePathsApi } from "./const";
+export {loadEntrees, loadByName, loadEntreesByDepartement, loadDepartements}
 
 let loadEntrees = function (path) {
     let entrees = fetch(path).catch(error => {
