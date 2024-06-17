@@ -2,12 +2,8 @@
 import Handlebars from 'handlebars' ;
 export {displayEntrees, displayDepartements, displayEntreesByDepartement, displayedList, displayEntreeComplet}
 import {loadEntrees, loadEntreesByDepartement} from "./loader";
-import {getEntreeCompletbylink} from "./index";
-import {getEntreeComplet} from "./index";
-import { basePathsApi } from './const';
-import {fusedEntreesLists} from "./index";
-import { loadEntrees } from './loader';
-import { racine } from './const';
+import {fusedEntreesLists, getEntreeComplet, getEntreeCompletbylink} from "./index";
+import { racine, basePathsApi } from './const';
 const p4Template = document.querySelector('#listeEntrees').innerHTML;
 const entreesTemp = Handlebars.compile(p4Template);
 
@@ -15,7 +11,6 @@ let displayedList;
 
 let displayEntrees = function (listeEntrees) {
     listeEntrees.entrees.sort((a, b) => a.entree.nom > b.entree.nom)
-    
     const promises = listeEntrees.entrees.map(entree =>
         loadEntrees(racine + entree.links.self.href).then(response =>
             response.json().then(ent => {
@@ -25,16 +20,15 @@ let displayEntrees = function (listeEntrees) {
     );
     
     Promise.all(promises).then(() => {
-        console.log(listeEntrees.links)
-    document.getElementById("entrees").innerHTML = entreesTemp({
-            // ajout d'un event listener pour chaque entree
+        document.getElementById("entrees").innerHTML = entreesTemp({
+                // ajout d'un event listener pour chaque entree
 
-        entree: listeEntrees.entrees,
-        link:listeEntrees.links
+            entree: listeEntrees.entrees,
+            link:listeEntrees.links
 
-    })
+        })
+    
     listeEntrees.entrees.forEach(entree => {
-        console.log(entree.links.self.href)
         document.getElementById(entree.links.self.href).addEventListener("click", () => {
             getEntreeCompletbylink(entree.links.self.href)
         })
