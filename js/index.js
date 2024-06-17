@@ -2,7 +2,7 @@ import { loadEntrees } from "./loader";
 import { displayEntrees, displayDepartements, displayEntreesByDepartement, displayedList } from "./ui";
 import { loadByName, loadDepartements, loadEntreesByDepartement } from "./loader";
 import { basePathsApi } from "./const";
-export { getEntreesByDepartement}
+export { fusedEntreesLists}
 
 let getEntrees = function (path) {
     let entrees = loadEntrees(basePathsApi+'entrees');
@@ -20,34 +20,48 @@ let getDepartement = function () {
         })
     })
 }
-let getEntreesByDepartement = function (departementId) {
-    let entrees = loadEntreesByDepartement(departementId);
-    console.log(entrees)
-    entrees.then(ent => {
-        ent.json().then( ent => {
-            displayEntreesByDepartement(ent)
-        })})
-
-}
 
 let searchBar = document.getElementById('search');
-searchBar.addEventListener("input", (event) => {
-    if (event.target.value === '') {
-        getEntreesByDepartement()
-    } else {
-        let entrees = loadByName(event.target.value)
-        entrees.then(ent => {
-            ent.json().then( ent => {
-                displayEntrees(fuseEntreesLists(ent))
+searchBar.addEventListener("input", (event) => {fusedEntreesLists(event)})
+
+let fusedEntreesLists = async  function (event) {
+    let search = document.getElementById('search').value
+    let departementId = document.getElementById('departement').value
+    console.log('a')
+    console.log(search)
+    //Récupère la liste des départements : 
+    let listDep;
+    if (departementId == 0) {
+        await loadEntrees(basePathsApi+'entrees').then(async entrees => {
+            await entrees.json().then(ent => {
+                listDep = ent
             })
         })
+    } else {
+        await loadEntreesByDepartement(departementId).then(async ent => {
+            await ent.json().then( ent => {
+                listDep = ent
+            })})
     }
-});
-
-let fuseEntreesLists = function (SearchList) {
-    let departementList = displayedList;
-    SearchList.entrees.filter((a) => {departementList.entrees.includes(a)})
-    return SearchList;
+    //Récupération de la liste des entrées correspondant à la recherche
+    let listSearch
+    if (search === '') {
+        await loadEntrees(basePathsApi+'entrees').then(async ent => {
+            await ent.json().then( ent => {
+                listSearch = ent
+            })
+        })
+    } else {
+        await loadByName(search).then(async ent => {
+            await ent.json().then( ent => {
+                listSearch = ent
+            })
+        })
+    } 
+    listSearch.entrees = listSearch.entrees.filter(search => {
+        listDep.entrees.some(dep => search.entree.nom == dep.entree.nom);
+    });
+    displayEntrees(listSearch);
 }
 getEntrees()
 getDepartement()

@@ -1,9 +1,7 @@
 //Affichage avec Handlebars
 import Handlebars from 'handlebars' ;
 export {displayEntrees, displayDepartements, displayEntreesByDepartement, displayedList}
-import {loadEntrees, loadEntreesByDepartement} from "./loader";
-import {getEntreesByDepartement} from "./index";
-import { basePathsApi } from './const';
+import {fusedEntreesLists} from "./index";
 const p4Template = document.querySelector('#listeEntrees').innerHTML;
 const entreesTemp = Handlebars.compile(p4Template);
 
@@ -30,7 +28,6 @@ let displayDepartements = function (listeDepartements) {
     option.text = "Tous les départements";
     option.value = 0;
     selectElement.appendChild(option);
-    console.log(listeDepartements.departements)
     listeDepartements.departements.forEach(departement => {
         let option = document.createElement("option");
         option.text = departement.departement.nom;
@@ -39,20 +36,5 @@ let displayDepartements = function (listeDepartements) {
     });
 
     // Add event listener for change event
-       selectElement.addEventListener('change', (event) => {
-            let departementId = event.target.value;
-            console.log(departementId);
-            if (departementId == 0) {
-                console.log("Id est 0")
-                loadEntrees(basePathsApi+'entrees').then(entrees => {
-                    entrees.json().then(ent => {
-                        displayedList = ent
-                        displayEntrees(ent)
-                    })
-                })
-            } else {
-                getEntreesByDepartement(departementId)
-            }
-
-    });
+       selectElement.addEventListener('change', fusedEntreesLists)
 }
