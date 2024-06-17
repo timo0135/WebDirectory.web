@@ -10,11 +10,23 @@ import { loadByName, loadDepartements, loadEntreesByDepartement } from "./loader
 import { basePathsApi } from "./const";
 export { fusedEntreesLists}
 
+let isAscending = true;
+
+document.getElementById('sortButton').addEventListener('click', function() {
+    isAscending = !isAscending;
+    this.textContent = isAscending ? 'Trier par ordre alphabétique ascendant' : 'Trier par ordre alphabétique descendant';
+    getEntrees();
+});
 
 let getEntrees = function (path) {
     let entrees = loadEntrees(basePathsApi+'entrees');
     entrees.then(ent => {
         ent.json().then( ent => {
+            if (isAscending) {
+                ent.entrees.sort((a, b) => a.entree.nom.localeCompare(b.entree.nom));
+            } else {
+                ent.entrees.sort((a, b) => b.entree.nom.localeCompare(a.entree.nom));
+            }
             displayEntrees(ent)
         })
     })
