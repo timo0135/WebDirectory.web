@@ -64,3 +64,28 @@ li:hover {
 .hidden {
     display: none;
 }*/
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    right: 0; /* Position to the right */
+    top: 0; /* Position at the top */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: visible; /* Enable scroll if needed */
+    background-color: transparent; /* Make background transparent */
+    pointer-events: none; /* Ignore mouse events */
+}
+
+.modal-content {
+    position: absolute; /* Position absolute */
+    margin: 0; /* No margin */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px; /* Adjust this to change the width of the modal */
+    height: 100%; /* Full height */
+    right: 0; /* Position to the right */
+    left: auto; /* Auto left position */
+    background-color: white; /* Make modal content background white */
+    pointer-events: auto;
+    overflow: auto;/* Handle mouse events */
+}

@@ -14,6 +14,12 @@
 
     </select>
     <p id="entrees"></p>
+  <div id="myModal" class="modal">
+      <div class="modal-content">
+          <span class="close">&times;</span>
+          <p id="modal-text">Some text in the Modal..</p>
+      </div>
+  </div>
 </head>
 <body>
 
@@ -26,8 +32,9 @@
       <h2> Entrées : </h2>
       <br>
       <ul>
-     {{#each entree}} 
-        <li> {{entree.nom}} {{entree.prenom}} - {{entree.departement}}</li>
+     {{#each entree}}
+
+        <li id='{{links.self.href}}'> {{entree.nom}} {{entree.prenom}} - {{entree.departement}} </li>
      {{/each}}
       </ul>
     </p>

@@ -1,8 +1,15 @@
-import { loadEntrees } from "./loader";
-import { displayEntrees, displayDepartements, displayEntreesByDepartement, displayedList } from "./ui";
+import {loadEntreeComplet, loadEntreeCompletbylink, loadEntrees} from "./loader";
+import {
+    displayEntrees,
+    displayDepartements,
+    displayEntreesByDepartement,
+    displayedList,
+    displayEntreeComplet
+} from "./ui";
 import { loadByName, loadDepartements, loadEntreesByDepartement } from "./loader";
 import { basePathsApi } from "./const";
 export { getEntreesByDepartement}
+
 
 let getEntrees = function (path) {
     let entrees = loadEntrees(basePathsApi+'entrees');
@@ -49,5 +56,30 @@ let fuseEntreesLists = function (SearchList) {
     SearchList.entrees.filter((a) => {departementList.entrees.includes(a)})
     return SearchList;
 }
+
+export let getEntreeComplet = function (entreeId) {
+    let entree = loadEntreeComplet(entreeId);
+
+    entree.then(ent => {
+        ent.json().then( ent => {
+            console.log(ent)
+            displayEntreeComplet(ent)
+        })
+    })
+}
+
+export let getEntreeCompletbylink = function (link) {
+    let entree = loadEntreeCompletbylink(link);
+
+    entree.then(ent => {
+        ent.json().then( ent => {
+            console.log(ent)
+            displayEntreeComplet(ent)
+        })
+    })
+
+
+}
+
 getEntrees()
 getDepartement()
