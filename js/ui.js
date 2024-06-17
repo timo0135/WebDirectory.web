@@ -10,6 +10,13 @@ const p4Template = document.querySelector('#listeEntrees').innerHTML;
 const entreesTemp = Handlebars.compile(p4Template);
 
 let displayedList;
+let isAscending = true;
+
+document.getElementById('sortButton').addEventListener('click', function() {
+    isAscending = !isAscending;
+    this.textContent = isAscending ? 'Trier par ordre alphabétique ascendant' : 'Trier par ordre alphabétique descendant';
+    displayEntrees()
+});
 
 let displayEntrees = function (listeEntrees) {
     listeEntrees.entrees.sort((a, b) => a.entree.nom > b.entree.nom)
