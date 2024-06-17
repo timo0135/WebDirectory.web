@@ -27,8 +27,6 @@ searchBar.addEventListener("input", (event) => {fusedEntreesLists(event)})
 let fusedEntreesLists = async  function (event) {
     let search = document.getElementById('search').value
     let departementId = document.getElementById('departement').value
-    console.log('a')
-    console.log(search)
     //Récupère la liste des départements : 
     let listDep;
     if (departementId == 0) {
@@ -59,8 +57,9 @@ let fusedEntreesLists = async  function (event) {
         })
     } 
     listSearch.entrees = listSearch.entrees.filter(search => {
-        listDep.entrees.some(dep => search.entree.nom == dep.entree.nom);
+        return listDep.entrees.some(dep => search.entree.nom == dep.entree.nom);
     });
+
     displayEntrees(listSearch);
 }
 getEntrees()
