@@ -24,10 +24,12 @@
 <script id="listeEntrees" type="text/x-handlebars-template">
     <p id="lentrees"> 
       <h2> Entrées : </h2>
+      <i class="fas fa-arrow-down" id = "arrow-down"></i>
+      <i class="fas fa-arrow-up" id = "arrow-up"></i>
       <br>
       <ul>
      {{#each entree}} 
-        <li> {{entree.nom}} {{entree.prenom}} - {{entree.departement}}</li>
+        <li> <img width="20" src={{entree.img}} > {{entree.nom}} {{entree.prenom}} - {{entree.departement}} </li>
      {{/each}}
       </ul>
     </p>
