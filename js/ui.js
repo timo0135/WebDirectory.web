@@ -2,10 +2,8 @@
 import Handlebars from 'handlebars' ;
 export {displayEntrees, displayDepartements, displayEntreesByDepartement, displayedList, displayEntreeComplet}
 import {loadEntrees, loadEntreesByDepartement} from "./loader";
-import {getEntreeCompletbylink} from "./index";
-import {getEntreeComplet} from "./index";
-import { basePathsApi } from './const';
-import {fusedEntreesLists} from "./index";
+import {fusedEntreesLists, getEntreeComplet, getEntreeCompletbylink} from "./index";
+import { racine, basePathsApi } from './const';
 const p4Template = document.querySelector('#listeEntrees').innerHTML;
 const entreesTemp = Handlebars.compile(p4Template);
 
@@ -20,21 +18,33 @@ document.getElementById('sortButton').addEventListener('click', function() {
 
 let displayEntrees = function (listeEntrees) {
     listeEntrees.entrees.sort((a, b) => a.entree.nom > b.entree.nom)
-    console.log(listeEntrees.links)
-    document.getElementById("entrees").innerHTML = entreesTemp({
-        // ajout d'un event listener pour chaque entree
+    const promises = listeEntrees.entrees.map(entree =>
+        loadEntrees(racine + entree.links.self.href).then(response =>
+            response.json().then(ent => {
+                entree.entree['img'] = racine + ent.links.image;
+            })
+        )
+    );
+    
+    Promise.all(promises).then(() => {
+        document.getElementById("entrees").innerHTML = entreesTemp({
+                // ajout d'un event listener pour chaque entree
 
-        entree:listeEntrees.entrees,
-        link:listeEntrees.links
+            entree: listeEntrees.entrees,
+            link:listeEntrees.links
 
-    })
+        })
+    
     listeEntrees.entrees.forEach(entree => {
-        console.log(entree.links.self.href)
         document.getElementById(entree.links.self.href).addEventListener("click", () => {
             getEntreeCompletbylink(entree.links.self.href)
         })
 
+        });
+    }).catch(error => {
+        console.error("Une erreur s'est produite lors du chargement des entrées : ", error);
     });
+    
 }
 let displayEntreesByDepartement = function (listeEntrees) {
     listeEntrees.entrees.sort((a, b) => a.entree.nom > b.entree.nom)
