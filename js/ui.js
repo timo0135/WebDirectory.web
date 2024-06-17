@@ -2,10 +2,9 @@
 import Handlebars from 'handlebars' ;
 export {displayEntrees, displayDepartements, displayEntreesByDepartement, displayedList, displayEntreeComplet}
 import {loadEntrees, loadEntreesByDepartement} from "./loader";
-import {getEntreeCompletbylink, getEntreesByDepartement} from "./index";
+import {getEntreeCompletbylink} from "./index";
 import {getEntreeComplet} from "./index";
 import { basePathsApi } from './const';
-export {displayEntrees, displayDepartements, displayEntreesByDepartement, displayedList}
 import {fusedEntreesLists} from "./index";
 const p4Template = document.querySelector('#listeEntrees').innerHTML;
 const entreesTemp = Handlebars.compile(p4Template);
