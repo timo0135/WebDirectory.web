@@ -13,11 +13,11 @@ let isAscending = true;
 document.getElementById('sortButton').addEventListener('click', function() {
     isAscending = !isAscending;
     this.textContent = isAscending ? 'Trier par ordre alphabétique ascendant' : 'Trier par ordre alphabétique descendant';
-    displayEntrees()
+    displayEntrees(displayedList);
 });
 
 let displayEntrees = function (listeEntrees) {
-    listeEntrees.entrees.sort((a, b) => a.entree.nom > b.entree.nom)
+    listeEntrees.entrees.sort((a, b) => isAscending ? a.entree.nom.localeCompare(b.entree.nom) : b.entree.nom.localeCompare(a.entree.nom));
     const promises = listeEntrees.entrees.map(entree =>
         loadEntrees(racine + entree.links.self.href).then(response =>
             response.json().then(ent => {
@@ -25,6 +25,7 @@ let displayEntrees = function (listeEntrees) {
             })
         )
     );
+
     
     Promise.all(promises).then(() => {
         document.getElementById("entrees").innerHTML = entreesTemp({
@@ -44,7 +45,7 @@ let displayEntrees = function (listeEntrees) {
     }).catch(error => {
         console.error("Une erreur s'est produite lors du chargement des entrées : ", error);
     });
-    
+    displayedList = listeEntrees;
 }
 let displayEntreesByDepartement = function (listeEntrees) {
     listeEntrees.entrees.sort((a, b) => a.entree.nom > b.entree.nom)
@@ -97,8 +98,13 @@ let displayEntreeComplet = function (entreecomplet) {
 
     // Display the entry details in the modal
     let emailLink = entreecomplet.entree.email ? `<a href="mailto:${entreecomplet.entree.email}">${entreecomplet.entree.email}</a>` : '';
-    document.getElementById("modal-text").innerHTML = `${JSON.stringify(entreecomplet)} ${emailLink}`;
-
+    document.getElementById("modal-text").innerHTML = `
+${entreecomplet.entree.nom}<br>
+${entreecomplet.entree.prenom}<br>
+${entreecomplet.entree.fonction}<br>
+${entreecomplet.entree.numeroBureau}<br>
+${entreecomplet.entree.numeroTel1} <br>
+${emailLink} `;
     // Display the modal
     modal.style.display = "block";
 }
