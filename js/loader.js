@@ -1,7 +1,7 @@
 //Fonctions qui récupèrent les infos de l'API
 
-import {basePathsApi} from "./const";
-export {loadEntrees, loadByName, loadEntreesByDepartement, loadDepartements}
+import {basePathsApi, racine} from "./const";
+export {loadEntrees, loadByName, loadEntreesByDepartement, loadDepartements , loadEntreeComplet, loadEntreeCompletbylink}
 
 let loadEntrees = async function (path) {
     let entrees = fetch(path).catch(error => {
@@ -28,4 +28,20 @@ let loadEntreesByDepartement = async function (departementId) {
 
 let loadByName = async function (search) {
     return loadEntrees(basePathsApi+'entrees/search?q='+search)
+}
+
+let loadEntreeComplet = function (entreeId) {
+    return fetch(basePathsApi+'entrees/'+entreeId).catch(error => {
+        console.log(
+            'network/response error :'
+            + error);
+    })
+}
+
+let loadEntreeCompletbylink = function (link) {
+    return fetch(racine+link).catch(error => {
+        console.log(
+            'network/response error :'
+            + error);
+    })
 }

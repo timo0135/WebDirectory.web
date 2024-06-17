@@ -1,6 +1,10 @@
 //Affichage avec Handlebars
 import Handlebars from 'handlebars' ;
-export {displayEntrees, displayDepartements, displayEntreesByDepartement, displayedList}
+export {displayEntrees, displayDepartements, displayEntreesByDepartement, displayedList, displayEntreeComplet}
+import {loadEntrees, loadEntreesByDepartement} from "./loader";
+import {getEntreeCompletbylink} from "./index";
+import {getEntreeComplet} from "./index";
+import { basePathsApi } from './const';
 import {fusedEntreesLists} from "./index";
 import { loadEntrees } from './loader';
 import { racine } from './const';
@@ -21,8 +25,20 @@ let displayEntrees = function (listeEntrees) {
     );
     
     Promise.all(promises).then(() => {
-        document.getElementById("entrees").innerHTML = entreesTemp({
-            entree: listeEntrees.entrees
+        console.log(listeEntrees.links)
+    document.getElementById("entrees").innerHTML = entreesTemp({
+            // ajout d'un event listener pour chaque entree
+
+        entree: listeEntrees.entrees,
+        link:listeEntrees.links
+
+    })
+    listeEntrees.entrees.forEach(entree => {
+        console.log(entree.links.self.href)
+        document.getElementById(entree.links.self.href).addEventListener("click", () => {
+            getEntreeCompletbylink(entree.links.self.href)
+        })
+
         });
     }).catch(error => {
         console.error("Une erreur s'est produite lors du chargement des entrées : ", error);
@@ -32,7 +48,8 @@ let displayEntrees = function (listeEntrees) {
 let displayEntreesByDepartement = function (listeEntrees) {
     listeEntrees.entrees.sort((a, b) => a.entree.nom > b.entree.nom)
     document.getElementById("entrees").innerHTML = entreesTemp({
-        entree:listeEntrees.entrees
+        entree:listeEntrees.entrees,
+        //ajout de l'id pour chaque entree
     });
 
 }
@@ -53,4 +70,34 @@ let displayDepartements = function (listeDepartements) {
 
     // Add event listener for change event
        selectElement.addEventListener('change', fusedEntreesLists)
+}
+let displayEntreeComplet = function (entreecomplet) {
+    // Get the modal
+    let modal = document.getElementById("myModal");
+
+    // Get the <span> element that closes the modal
+    let span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Display the entry details in the modal
+    // Log entreecomplet.email to the console
+    console.log('Email:', entreecomplet.entree.email);
+
+    // Display the entry details in the modal
+    let emailLink = entreecomplet.entree.email ? `<a href="mailto:${entreecomplet.entree.email}">${entreecomplet.entree.email}</a>` : '';
+    document.getElementById("modal-text").innerHTML = `${JSON.stringify(entreecomplet)} ${emailLink}`;
+
+    // Display the modal
+    modal.style.display = "block";
 }
