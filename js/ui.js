@@ -34,7 +34,7 @@ let displayEntrees = function (listeEntrees) {
     
     Promise.all(promises).then(() => {
         document.getElementById("entrees").innerHTML = entreesTemp({
-                // ajout d'un event listener pour chaque entree
+
 
             entree: listeEntrees.entrees,
             link:listeEntrees.links
@@ -75,11 +75,11 @@ let displayDepartements = function (listeDepartements) {
         selectElement.appendChild(option);
     });
 
-    // Add event listener for change event
+    // ajout event listener  pour chaque département
        selectElement.addEventListener('change', fusedEntreesLists)
 }
 let displayEntreeComplet = function (entreecomplet) {
-    // Get the modal
+    // recuperer le modal
     let modal = document.getElementById("myModal");
 
     let modalcontent = document.getElementsByClassName('modal-content')[0]
@@ -90,7 +90,7 @@ let displayEntreeComplet = function (entreecomplet) {
         }
     }
     
-    // Display the entry details in the modal
+   // get the image
     entreecomplet.entree.img = racine+entreecomplet.links.image
     if (entreecomplet.entree.numeroTel2 != null) {
         entreecomplet.entree.numeroTel1 = ([entreecomplet.entree.numeroTel1,entreecomplet.entree.numeroTel2]).join(',')
@@ -100,6 +100,6 @@ let displayEntreeComplet = function (entreecomplet) {
         entree:entreecomplet.entree
         //ajout de l'id pour chaque entree
     });
-    // Display the modal
+    // affichage du modal
     modal.style.display = "block";
 }
