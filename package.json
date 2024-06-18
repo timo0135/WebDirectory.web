@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "esbuild": "0.17.18",
+    "express": "^4.19.2",
+    "handlebars": "^4.7.8"
+  },
+  "scripts": {
+    "build": "esbuild js/index.js --bundle --sourcemap --target=es2015 --outfile=dist/index.js"
+  },
+  "name": "webdirectory.web",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
