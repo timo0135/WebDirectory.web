@@ -41,14 +41,12 @@ let fusedEntreesLists = async  function (event) {
         promises.push(load(basePathsApi+'entrees').then( entrees => {
             promisesJson.push(entrees.json().then(ent => {
                 listDep = ent
-                console.log('1')
             }))
         }))
     } else {
         promises.push(loadEntreesByDepartement(departementId).then( ent => {
             promisesJson.push(ent.json().then( ent => {
                 listDep = ent
-                console.log('2')
             }))
         }
         ))
@@ -59,24 +57,20 @@ let fusedEntreesLists = async  function (event) {
         promises.push(load(basePathsApi+'entrees').then( ent => {
             promisesJson.push(ent.json().then( ent => {
                 listSearch = ent
-                console.log('3')
             }))
         }))
     } else {
         promises.push(loadByName(search).then( ent => {
             promisesJson.push(ent.json().then( ent => {
                 listSearch = ent
-                console.log('4')
             }))
         }))
     } 
     Promise.all(promises).then(() => {
         Promise.all(promisesJson).then(() => {
-            console.log(listSearch)
             listSearch.entrees = listSearch.entrees.filter(search => {
                 return listDep.entrees.some(dep => search.entree.nom == dep.entree.nom);
             });
-            console.log('fin')
             displayEntrees(listSearch);
         })
     })
