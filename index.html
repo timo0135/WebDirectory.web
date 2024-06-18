@@ -2,45 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Phone Book Web </title>
+    <title>Phone Book Web</title>
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-  <header>
-    <h1> Phone Book </h1>
-  </header>
+<header>
+    <h1>Phone Book</h1>
+    <i id="sortButton" class="fas fa-sort-alpha-down"></i>
+</header>
+<div class="search-container">
     <input type="text" placeholder="Search.." id="search">
-  <button id="sortButton">Trier par ordre alphabétique ascendant</button>
-    <select id="departement">
 
-    </select>
-    <p id="entrees"></p>
-  <div id="myModal" class="modal">
-      <div class="modal-content">
-          <div class="modal-header">  Détails de l'entrée </div>
-          <p id="modal-text"></p>
-      </div>
-  </div>
+</div>
+<select id="departement"></select>
+<p id="entrees"></p>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">Détails de l'entrée</div>
+        <p id="modal-text"></p>
+    </div>
+</div>
 
+<script defer type="module" src="./dist/index.js"></script>
 </body>
-<script defer type ="module" src="./dist/index.js"></script>
 </html>
 
 <script id="listeEntrees" type="text/x-handlebars-template">
-    <h2> Entrées : </h2>
+    <h2>Entrées :</h2>
     <br>
     <ul>
-    {{#each entree}}
-      <li id='{{links.self.href}}'> <img width="20" src={{entree.img}} > {{entree.nom}} {{entree.prenom}} - {{entree.departement}}  </li>
-    {{/each}}
+        {{#each entree}}
+            <li id='{{links.self.href}}'>
+                <img width="20" src={{entree.img}} alt="image de {{entree.nom}}">
+                {{entree.nom}} {{entree.prenom}} - {{entree.departement}}
+            </li>
+        {{/each}}
     </ul>
-  </script>
+</script>
 
 <script id="displayFull" type="text/x-handlebars-template">
-  <img width="300" src={{entree.img}}> <br>
-  <h2> {{entree.nom}} {{entree.prenom}}</h2>
-  <h3> {{entree.departement}}</h3>
-  Salle : {{entree.numeroBureau}} <br>
-  Email : <a href="mailto:{{entree.email}}"> {{entree.email}}</a> <br>
-  Tel : {{entree.numeroTel1}}
+    <img src="{{entree.img}}" alt="image de {{entree.nom}}">
+    <h2>{{entree.nom}} {{entree.prenom}}</h2>
+    <h3>{{entree.departement}}</h3>
+    <div class="infos">
+        <div class="info-item">
+            <i class="fas fa-building"></i>Salle : {{entree.numeroBureau}}
+        </div>
+        <div class="info-item">
+            <i class="fas fa-envelope"></i>Email : <a href="mailto:{{entree.email}}">{{entree.email}}</a>
+        </div>
+        <div class="info-item">
+            <i class="fas fa-phone"></i>Tel : {{entree.numeroTel1}}
+        </div>
+    </div>
+
 </script>
+
+
+

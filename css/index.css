@@ -7,41 +7,111 @@ body {
     color: #333;
 }
 
-.header {
-    grid-area: header;
+header {
     background-color: #006b7e;
     color: white;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0 0 0 1em;
+    font-size: 2rem;
+}
+
+header i{
+    margin: 0 1em 0 0;
+    font-size: 2rem;
+}
+
+header i:hover {
+    cursor: pointer;
 }
 
 /* Style de la barre de recherche */
-#searchBar {
-    width: 100%;
+#search {
+    width: calc(100% - 40px);
     padding: 10px;
-    margin: 20px 0;
+    margin: 20px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
 }
 
+
+/* Style du select */
+#departement {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: calc(100% - 40px);
+    box-sizing: border-box;
+    background-color: #fff;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658c-.566-.681-.106-1.658.755-1.658h9.588c.86 0 1.32.977.754 1.658l-4.796 5.482c-.58.663-1.531.663-2.112 0z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+#departement:hover {
+    border-color: #006b7e;
+}
+
+#departement:focus {
+    outline: none;
+    border-color: #006b7e;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Style des options du select */
+#departement option {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
+}
+
+/* Style pour les options au survol */
+#departement option:hover {
+    background-color: #f0f0f0;
+}
+
+/* Style pour l'option sélectionnée */
+#departement option:checked {
+    background-color: #006b7e;
+    color: #fff;
+}
+
+#entrees {
+    margin: 20px;
+}
+
 /* Conteneur pour la liste */
 .list-container {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 0 20px;
 }
 
 /* Style de la liste */
 ul {
-    list-style-type: none; /* Retirer les puces */
+    list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
 /* Style des éléments de la liste */
 li {
+    display: flex;
+    align-items: center;
     background-color: #fff;
     padding: 15px;
     margin-bottom: 10px;
@@ -50,49 +120,126 @@ li {
     transition: background-color 0.3s;
 }
 
-/* Effet au survol des éléments de la liste */
 li:hover {
     background-color: #f9f9f9;
+    cursor: pointer;
 }
 
-/* Style pour le texte des éléments de la liste */
+li img {
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
 .list-item-text {
     font-size: 18px;
 }
 
-/* Style pour les éléments masqués (lors du filtrage) 
+/* Style pour les éléments masqués (lors du filtrage) */
 .hidden {
     display: none;
-}*/
+}
+
+/* Style du modal */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    right: 0; /* Position to the right */
-    top: 0; /* Position at the top */
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: visible; /* Enable scroll if needed */
-    background-color: transparent; /* Make background transparent */
-    pointer-events: none; /* Ignore mouse events */
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
 }
 
 .modal-content {
-    position: absolute; /* Position absolute */
-    margin: 0; /* No margin */
+    position: absolute;
+    margin: 0;
     border: 1px solid #888;
-    width: 45%; /* Adjust this to change the width of the modal */
-    height: 100%; /* Full height */
-    right: 0; /* Position to the right */
-    left: auto; /* Auto left position */
-    background-color: white; /* Make modal content background white */
+    width: 30%;
+    height: 90%;
+    right: 0;
+    left: auto;
+    background-color: white;
     pointer-events: auto;
-    overflow: auto;/* Handle mouse events */
+    overflow: auto;
     text-align: center;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 20px;
+    align-items: center;
 }
 
 .modal-header {
-    padding: 20px 20px;
-    background-color: #007bff; /* Blue background */
-    color: white; /* White text */
+    padding: 20px;
+    background-color: #006b7e;
+    color: white;
     font-size: larger;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.modal-content p {
+    padding: 20px;
+    font-size: 16px;
+    text-align: left;
+}
+
+/* Style pour le contenu du modal */
+.modal-content img {
+    border-radius: 50%;
+    margin: 20px 0;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 2px solid #006b7e;
+}
+
+.modal-content h2 {
+    margin: 20px 0;
+    font-size: 2rem;
+    color: #333;
+}
+
+.modal-content h3 {
+    margin: 20px 0;
+    font-size: 1.5rem;
+    color: #666;
+}
+
+.modal-content a {
+    color: #006b7e;
+    text-decoration: none;
+}
+
+.modal-content a:hover {
+    text-decoration: underline;
+}
+
+.modal-content .info-item {
+    margin: 20px 0;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.modal-content .info-item i {
+    margin-right: 15px;
+    color: #006b7e;
+    font-size: 1.5rem;
+}
+
+.modal-content p {
+    text-align: center;
+}
+
+.infos{
+    padding-top: 2em;
+}
+
+.modal-content .info-item{
+    margin: 1em 0;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
 }

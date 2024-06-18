@@ -18,6 +18,7 @@ let getEntrees = function (path) {
         })
     })
 }
+// Fonction qui récupère les départements grace au fonction loadDepartements et les affiche grace à displayDepartements
 let getDepartement = function () {
     let departements = loadDepartements();
     departements.then(dep => {
@@ -81,7 +82,7 @@ let fusedEntreesLists = async  function (event) {
     })
 
 }
-
+// Fonction qui récupère les entrées grace au fonction loadEntrees et les affiche grace à displayEntrees
 export let getEntreeComplet = function (entreeId) {
     let entree = loadEntreeComplet(entreeId);
 
@@ -91,7 +92,7 @@ export let getEntreeComplet = function (entreeId) {
         })
     })
 }
-
+// Fonction qui récupère les entrées grace au fonction loadEntrees et les affiche grace à displayEntrees
 export let getEntreeCompletbylink = function (link) {
     let entree = loadEntreeCompletbylink(link);
 
