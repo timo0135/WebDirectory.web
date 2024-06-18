@@ -16,7 +16,8 @@ let isAscending = true;
 
 document.getElementById('sortButton').addEventListener('click', function() {
     isAscending = !isAscending;
-    this.textContent = isAscending ? 'Trier par ordre alphabétique ascendant' : 'Trier par ordre alphabétique descendant';
+    let button = document.getElementById('sortButton');
+    button.className = isAscending ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc';
     displayEntrees(displayedList);
 });
 
