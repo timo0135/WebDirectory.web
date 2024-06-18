@@ -4,8 +4,12 @@ export {displayEntrees, displayDepartements, displayEntreesByDepartement, displa
 import {loadEntrees, loadEntreesByDepartement} from "./loader";
 import {fusedEntreesLists, getEntreeComplet, getEntreeCompletbylink} from "./index";
 import { racine, basePathsApi } from './const';
+
 const p4Template = document.querySelector('#listeEntrees').innerHTML;
 const entreesTemp = Handlebars.compile(p4Template);
+
+const p5Template = document.querySelector('#displayFull').innerHTML;
+const entreeFull = Handlebars.compile(p5Template);
 
 let displayedList;
 let isAscending = true;
@@ -77,34 +81,24 @@ let displayEntreeComplet = function (entreecomplet) {
     // Get the modal
     let modal = document.getElementById("myModal");
 
-    // Get the <span> element that closes the modal
-    let span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
+    let modalcontent = document.getElementsByClassName('modal-content')[0]
     window.onclick = function(event) {
-        if (event.target == modal) {
+        console.log(event.target)
+        if (!modalcontent.contains(event.target)) {
             modal.style.display = "none";
         }
     }
-
+    
     // Display the entry details in the modal
-    // Log entreecomplet.email to the console
-    console.log('Email:', entreecomplet.entree.email);
-
-    // Display the entry details in the modal
-    let emailLink = entreecomplet.entree.email ? `<a href="mailto:${entreecomplet.entree.email}">${entreecomplet.entree.email}</a>` : '';
-    document.getElementById("modal-text").innerHTML = `
-${entreecomplet.entree.nom}<br>
-${entreecomplet.entree.prenom}<br>
-${entreecomplet.entree.fonction}<br>
-${entreecomplet.entree.numeroBureau}<br>
-${entreecomplet.entree.numeroTel1} <br>
-${emailLink} `;
+    entreecomplet.entree.img = racine+entreecomplet.links.image
+    if (entreecomplet.entree.numeroTel2 != null) {
+        entreecomplet.entree.numeroTel1 = ([entreecomplet.entree.numeroTel1,entreecomplet.entree.numeroTel2]).join(',')
+    }
+    console.log(entreecomplet.entree)
+    document.getElementById("modal-text").innerHTML = entreeFull({
+        entree:entreecomplet.entree
+        //ajout de l'id pour chaque entree
+    });
     // Display the modal
     modal.style.display = "block";
 }

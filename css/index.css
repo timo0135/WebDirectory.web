@@ -79,13 +79,20 @@ li:hover {
 .modal-content {
     position: absolute; /* Position absolute */
     margin: 0; /* No margin */
-    padding: 20px;
     border: 1px solid #888;
-    width: 300px; /* Adjust this to change the width of the modal */
+    width: 45%; /* Adjust this to change the width of the modal */
     height: 100%; /* Full height */
     right: 0; /* Position to the right */
     left: auto; /* Auto left position */
     background-color: white; /* Make modal content background white */
     pointer-events: auto;
     overflow: auto;/* Handle mouse events */
+    text-align: center;
+}
+
+.modal-header {
+    padding: 20px 20px;
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    font-size: larger;
 }
