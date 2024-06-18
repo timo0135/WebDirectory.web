@@ -11,7 +11,7 @@ import { basePathsApi } from "./const";
 export { fusedEntreesLists}
 
 
-
+// Fonction qui récupère les entrées grace au fonction loadEntrees et les affiche grace à displayEntrees
 let getEntrees = function (path) {
     let entrees = loadEntrees(basePathsApi+'entrees');
     entrees.then(ent => {
@@ -20,6 +20,7 @@ let getEntrees = function (path) {
         })
     })
 }
+// Fonction qui récupère les départements grace au fonction loadDepartements et les affiche grace à displayDepartements
 let getDepartement = function () {
     let departements = loadDepartements();
     departements.then(dep => {
@@ -31,7 +32,7 @@ let getDepartement = function () {
 
 let searchBar = document.getElementById('search');
 searchBar.addEventListener("input", (event) => {fusedEntreesLists(event)})
-
+// Fonction qui récupère les entrées grace au fonction loadEntrees et les affiche grace à displayEntrees
 let fusedEntreesLists = async  function (event) {
     let search = document.getElementById('search').value
     let departementId = document.getElementById('departement').value
@@ -70,7 +71,7 @@ let fusedEntreesLists = async  function (event) {
 
     displayEntrees(listSearch);
 }
-
+// Fonction qui récupère les entrées grace au fonction loadEntrees et les affiche grace à displayEntrees
 export let getEntreeComplet = function (entreeId) {
     let entree = loadEntreeComplet(entreeId);
 
@@ -81,7 +82,7 @@ export let getEntreeComplet = function (entreeId) {
         })
     })
 }
-
+// Fonction qui récupère les entrées grace au fonction loadEntrees et les affiche grace à displayEntrees
 export let getEntreeCompletbylink = function (link) {
     let entree = loadEntreeCompletbylink(link);
 
