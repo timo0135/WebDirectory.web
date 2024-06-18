@@ -1,19 +1,17 @@
-import {loadEntreeComplet, loadEntreeCompletbylink, loadEntrees} from "./loader";
-import {
-    displayEntrees,
-    displayDepartements,
-    displayEntreesByDepartement,
-    displayedList,
-    displayEntreeComplet
-} from "./ui";
+import {loadEntreeComplet, loadEntreeCompletbylink, load} from "./loader";
+import {displayEntrees,displayDepartements,displayEntreeComplet} from "./ui";
 import { loadByName, loadDepartements, loadEntreesByDepartement } from "./loader";
 import { basePathsApi } from "./const";
-export { fusedEntreesLists}
+export { fusedEntreesLists, isAscending}
+
+
+let isAscending = true;
+
 
 
 
 let getEntrees = function (path) {
-    let entrees = loadEntrees(basePathsApi+'entrees');
+    let entrees = load(basePathsApi+'entrees');
     entrees.then(ent => {
         ent.json().then( ent => {
             displayEntrees(ent)
@@ -29,46 +27,59 @@ let getDepartement = function () {
     })
 }
 
-let searchBar = document.getElementById('search');
-searchBar.addEventListener("input", (event) => {fusedEntreesLists(event)})
 
 let fusedEntreesLists = async  function (event) {
     let search = document.getElementById('search').value
     let departementId = document.getElementById('departement').value
     //Récupère la liste des départements : 
     let listDep;
+
+    let promises = []
+    let promisesJson = []
     if (departementId == 0) {
-        await loadEntrees(basePathsApi+'entrees').then(async entrees => {
-            await entrees.json().then(ent => {
+        promises.push(load(basePathsApi+'entrees').then( entrees => {
+            promisesJson.push(entrees.json().then(ent => {
                 listDep = ent
-            })
-        })
+                console.log('1')
+            }))
+        }))
     } else {
-        await loadEntreesByDepartement(departementId).then(async ent => {
-            await ent.json().then( ent => {
+        promises.push(loadEntreesByDepartement(departementId).then( ent => {
+            promisesJson.push(ent.json().then( ent => {
                 listDep = ent
-            })})
+                console.log('2')
+            }))
+        }
+        ))
     }
     //Récupération de la liste des entrées correspondant à la recherche
     let listSearch
     if (search === '') {
-        await loadEntrees(basePathsApi+'entrees').then(async ent => {
-            await ent.json().then( ent => {
+        promises.push(load(basePathsApi+'entrees').then( ent => {
+            promisesJson.push(ent.json().then( ent => {
                 listSearch = ent
-            })
-        })
+                console.log('3')
+            }))
+        }))
     } else {
-        await loadByName(search).then(async ent => {
-            await ent.json().then( ent => {
+        promises.push(loadByName(search).then( ent => {
+            promisesJson.push(ent.json().then( ent => {
                 listSearch = ent
-            })
-        })
+                console.log('4')
+            }))
+        }))
     } 
-    listSearch.entrees = listSearch.entrees.filter(search => {
-        return listDep.entrees.some(dep => search.entree.nom == dep.entree.nom);
-    });
+    Promise.all(promises).then(() => {
+        Promise.all(promisesJson).then(() => {
+            console.log(listSearch)
+            listSearch.entrees = listSearch.entrees.filter(search => {
+                return listDep.entrees.some(dep => search.entree.nom == dep.entree.nom);
+            });
+            console.log('fin')
+            displayEntrees(listSearch);
+        })
+    })
 
-    displayEntrees(listSearch);
 }
 
 export let getEntreeComplet = function (entreeId) {
@@ -76,7 +87,6 @@ export let getEntreeComplet = function (entreeId) {
 
     entree.then(ent => {
         ent.json().then( ent => {
-            console.log(ent)
             displayEntreeComplet(ent)
         })
     })
@@ -87,7 +97,6 @@ export let getEntreeCompletbylink = function (link) {
 
     entree.then(ent => {
         ent.json().then( ent => {
-            console.log(ent)
             displayEntreeComplet(ent)
         })
     })
@@ -95,5 +104,13 @@ export let getEntreeCompletbylink = function (link) {
 
 }
 
+document.getElementById('sortButton').addEventListener('click', function() {
+    isAscending = !isAscending;
+    this.textContent = isAscending ? 'Trier par ordre alphabétique ascendant' : 'Trier par ordre alphabétique descendant';
+    fusedEntreesLists();
+});
+
+let searchBar = document.getElementById('search');
+searchBar.addEventListener("input", (event) => {fusedEntreesLists(event)})
 getEntrees()
 getDepartement()

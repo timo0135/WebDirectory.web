@@ -1,8 +1,8 @@
 //Affichage avec Handlebars
 import Handlebars from 'handlebars' ;
 export {displayEntrees, displayDepartements, displayEntreesByDepartement, displayedList, displayEntreeComplet}
-import {loadEntrees, loadEntreesByDepartement} from "./loader";
-import {fusedEntreesLists, getEntreeComplet, getEntreeCompletbylink} from "./index";
+import {load, loadEntreesByDepartement} from "./loader";
+import {fusedEntreesLists, getEntreeComplet, getEntreeCompletbylink, isAscending} from "./index";
 import { racine, basePathsApi } from './const';
 
 const p4Template = document.querySelector('#listeEntrees').innerHTML;
@@ -12,18 +12,11 @@ const p5Template = document.querySelector('#displayFull').innerHTML;
 const entreeFull = Handlebars.compile(p5Template);
 
 let displayedList;
-let isAscending = true;
-
-document.getElementById('sortButton').addEventListener('click', function() {
-    isAscending = !isAscending;
-    this.textContent = isAscending ? 'Trier par ordre alphabétique ascendant' : 'Trier par ordre alphabétique descendant';
-    displayEntrees(displayedList);
-});
 
 let displayEntrees = function (listeEntrees) {
     listeEntrees.entrees.sort((a, b) => isAscending ? a.entree.nom.localeCompare(b.entree.nom) : b.entree.nom.localeCompare(a.entree.nom));
     const promises = listeEntrees.entrees.map(entree =>
-        loadEntrees(racine + entree.links.self.href).then(response =>
+        load(racine + entree.links.self.href).then(response =>
             response.json().then(ent => {
                 entree.entree['img'] = racine + ent.links.image;
             })
@@ -34,7 +27,6 @@ let displayEntrees = function (listeEntrees) {
     Promise.all(promises).then(() => {
         document.getElementById("entrees").innerHTML = entreesTemp({
                 // ajout d'un event listener pour chaque entree
-
             entree: listeEntrees.entrees,
             link:listeEntrees.links
 
@@ -51,6 +43,7 @@ let displayEntrees = function (listeEntrees) {
     });
     displayedList = listeEntrees;
 }
+
 let displayEntreesByDepartement = function (listeEntrees) {
     listeEntrees.entrees.sort((a, b) => a.entree.nom > b.entree.nom)
     document.getElementById("entrees").innerHTML = entreesTemp({
@@ -83,7 +76,6 @@ let displayEntreeComplet = function (entreecomplet) {
 
     let modalcontent = document.getElementsByClassName('modal-content')[0]
     window.onclick = function(event) {
-        console.log(event.target)
         if (!modalcontent.contains(event.target)) {
             modal.style.display = "none";
         }
@@ -94,7 +86,6 @@ let displayEntreeComplet = function (entreecomplet) {
     if (entreecomplet.entree.numeroTel2 != null) {
         entreecomplet.entree.numeroTel1 = ([entreecomplet.entree.numeroTel1,entreecomplet.entree.numeroTel2]).join(',')
     }
-    console.log(entreecomplet.entree)
     document.getElementById("modal-text").innerHTML = entreeFull({
         entree:entreecomplet.entree
         //ajout de l'id pour chaque entree

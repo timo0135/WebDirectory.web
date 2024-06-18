@@ -1,25 +1,32 @@
 //Fonctions qui récupèrent les infos de l'API
 
 import {basePathsApi, racine} from "./const";
-export {loadEntrees, loadByName, loadEntreesByDepartement, loadDepartements , loadEntreeComplet, loadEntreeCompletbylink}
+import { isAscending } from "./index";
+export {load, loadByName, loadEntreesByDepartement, loadDepartements , loadEntreeComplet, loadEntreeCompletbylink}
 
-let loadEntrees = async function (path) {
+let load = async function (path) {
     let entrees = fetch(path).catch(error => {
-        console.log(
+        console.error(
         'network/response error :'
         +error);})
     return entrees 
 }
 let loadDepartements = async function () {
     return fetch(basePathsApi + 'services').catch(error => {
-        console.log(
+        console.error(
             'network/response error :'
             + error);
     })
 }
 let loadEntreesByDepartement = async function (departementId) {
-    return fetch(basePathsApi + 'services/' + departementId+'/entrees').catch(error => {
-        console.log(
+    let order = '?order=nom-'; 
+    if (isAscending) {
+        order += 'asc'
+    } else {
+        order += 'desc'
+    }
+    return fetch(basePathsApi + 'services/' + departementId+'/entrees'+order).catch(error => {
+        console.error(
             'network/response error :'
             + error);
     })
@@ -27,12 +34,18 @@ let loadEntreesByDepartement = async function (departementId) {
 }
 
 let loadByName = async function (search) {
-    return loadEntrees(basePathsApi+'entrees/search?q='+search)
+    let order = '&order=nom-'; 
+    if (isAscending) {
+        order += 'asc'
+    } else {
+        order += 'desc'
+    }
+    return load(basePathsApi+'entrees/search?q='+search+order)
 }
 
 let loadEntreeComplet = function (entreeId) {
     return fetch(basePathsApi+'entrees/'+entreeId).catch(error => {
-        console.log(
+        console.error(
             'network/response error :'
             + error);
     })
@@ -40,7 +53,7 @@ let loadEntreeComplet = function (entreeId) {
 
 let loadEntreeCompletbylink = function (link) {
     return fetch(racine+link).catch(error => {
-        console.log(
+        console.error(
             'network/response error :'
             + error);
     })
