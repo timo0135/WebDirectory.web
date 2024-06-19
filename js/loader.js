@@ -19,7 +19,7 @@ let loadDepartements = async function () {
 
 let loadEntreesByNameDepartement = async function (departementId, searchContent) {
     //Construction de l'URl en fonction des informations fournies 
-    let order = '?order=nom-'; 
+    let order = '?sort=nom-'; 
     if (isAscending) {
         order += 'asc'
     } else {
@@ -35,6 +35,7 @@ let loadEntreesByNameDepartement = async function (departementId, searchContent)
         search1 = '&q='+searchContent;
         search2 ='/search'
     }
+    console.log(basePathsApi + dep+'entrees'+search2+order+search1)
     return load(basePathsApi + dep+'entrees'+search2+order+search1)
 }
 

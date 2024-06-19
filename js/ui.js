@@ -2,7 +2,7 @@
 import Handlebars from 'handlebars' ;
 export {displayEntrees, displayDepartements, displayEntreeComplet}
 import {load} from "./loader";
-import {fusedEntreesLists, getEntreeCompletbylink, isAscending} from "./index";
+import {getEntreesLists, getEntreeCompletbylink, isAscending} from "./index";
 import { racine } from './const';
 
 // Déclaration des templates Handlebars 
@@ -13,7 +13,6 @@ const p5Template = document.querySelector('#displayFull').innerHTML;
 const entreeFull = Handlebars.compile(p5Template);
 
 let displayEntrees = function (listeEntrees) {
-    listeEntrees.entrees.sort((a, b) => isAscending ? a.entree.nom.localeCompare(b.entree.nom) : b.entree.nom.localeCompare(a.entree.nom));
     const promises = listeEntrees.entrees.map(entree =>
         load(racine + entree.links.self.href).then(response =>
             response.json().then(ent => {
@@ -57,7 +56,7 @@ let displayDepartements = function (listeDepartements) {
     });
 
     // ajout event listener  pour chaque département
-       selectElement.addEventListener('change', fusedEntreesLists)
+       selectElement.addEventListener('change', getEntreesLists)
 }
 let displayEntreeComplet = function (entreecomplet) {
     // recuperer le modal
@@ -72,8 +71,9 @@ let displayEntreeComplet = function (entreecomplet) {
     
    // get the image
     entreecomplet.entree.img = racine+entreecomplet.links.image
+    entreecomplet.entree.numeros = [entreecomplet.entree.numeroTel1]
     if (entreecomplet.entree.numeroTel2 != null) {
-        entreecomplet.entree.numeroTel1 = ([entreecomplet.entree.numeroTel1,entreecomplet.entree.numeroTel2]).join(',')
+        entreecomplet.entree.numeros.push(entreecomplet.entree.numeroTel2)
     }
     document.getElementById("modal-text").innerHTML = entreeFull({
         entree:entreecomplet.entree

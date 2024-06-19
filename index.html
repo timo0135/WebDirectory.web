@@ -51,10 +51,15 @@
         </div>
         <div class="info-item">
             <i class="fas fa-envelope"></i>Email : <a href="mailto:{{entree.email}}">{{entree.email}}</a>
-        </div>
+        </div>  
         <div class="info-item">
-            <i class="fas fa-phone"></i>Tel : {{entree.numeroTel1}}
+            <i class="fas fa-briefcase"></i>Fonction : {{entree.fonction}}</a>
+        </div>  
+            {{#each entree.numeros}}
+        <div class="info-item">
+            <i class="fas fa-phone"></i>Tel : {{this}}
         </div>
+            {{/each}}
     </div>
 
 </script>

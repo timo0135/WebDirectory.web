@@ -1,20 +1,20 @@
 import {loadEntreeComplet, loadEntreeCompletbylink} from "./loader";
 import {displayEntrees,displayDepartements,displayEntreeComplet} from "./ui";
 import { loadDepartements, loadEntreesByNameDepartement  } from "./loader";
-export { fusedEntreesLists, isAscending, getEntreeComplet, getEntreeCompletbylink}
+export { getEntreesLists, isAscending, getEntreeCompletbylink}
 
 
 let isAscending = true;
 
 let init = function () {
     document.getElementById('sortButton').addEventListener('click', function() {
-    isAscending = !isAscending;
-    fusedEntreesLists();
+        isAscending = !isAscending;
+        getEntreesLists();
     });
 
     let searchBar = document.getElementById('search');
-    searchBar.addEventListener("input", (event) => {fusedEntreesLists(event)})
-    fusedEntreesLists()
+    searchBar.addEventListener("input", (event) => {getEntreesLists(event)})
+    getEntreesLists()
     getDepartement()
 }
 
@@ -28,11 +28,13 @@ let getDepartement = function () {
     })
 }
 
-
-let fusedEntreesLists = async  function (event) {
+//Fonction qui récupère la liste des entrées avec un loader puis les affiche 
+let getEntreesLists = async  function (event) {
+    //Récupération de la recherche et du département entrées pas l'utilisateur
     let search = document.getElementById('search').value
     let departementId = document.getElementById('departement').value
 
+    //Chargement puis affichage des entrées correspondant aux informations récupérées 
     loadEntreesByNameDepartement(departementId, search).then(list => {
         list.json().then(list => {
             displayEntrees(list)
@@ -40,17 +42,7 @@ let fusedEntreesLists = async  function (event) {
     })
 }
 
-// Fonction qui récupère les entrées grace au fonction loadEntrees et les affiche grace à displayEntrees
-let getEntreeComplet = function (entreeId) {
-    let entree = loadEntreeComplet(entreeId);
-
-    entree.then(ent => {
-        ent.json().then( ent => {
-            displayEntreeComplet(ent)
-        })
-    })
-}
-// Fonction qui récupère les entrées grace au fonction loadEntrees et les affiche grace à displayEntrees
+// Fonction qui récupère les entrées grace à la fonction loadEntree et les affiche grace à displayEntrees
 let getEntreeCompletbylink = function (link) {
     let entree = loadEntreeCompletbylink(link);
 
