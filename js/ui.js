@@ -1,17 +1,16 @@
 //Affichage avec Handlebars
 import Handlebars from 'handlebars' ;
-export {displayEntrees, displayDepartements, displayEntreesByDepartement, displayedList, displayEntreeComplet}
-import {load, loadEntreesByDepartement} from "./loader";
-import {fusedEntreesLists, getEntreeComplet, getEntreeCompletbylink, isAscending} from "./index";
-import { racine, basePathsApi } from './const';
+export {displayEntrees, displayDepartements, displayEntreeComplet}
+import {load} from "./loader";
+import {fusedEntreesLists, getEntreeCompletbylink, isAscending} from "./index";
+import { racine } from './const';
 
+// Déclaration des templates Handlebars 
 const p4Template = document.querySelector('#listeEntrees').innerHTML;
 const entreesTemp = Handlebars.compile(p4Template);
 
 const p5Template = document.querySelector('#displayFull').innerHTML;
 const entreeFull = Handlebars.compile(p5Template);
-
-let displayedList;
 
 let displayEntrees = function (listeEntrees) {
     listeEntrees.entrees.sort((a, b) => isAscending ? a.entree.nom.localeCompare(b.entree.nom) : b.entree.nom.localeCompare(a.entree.nom));
@@ -22,7 +21,6 @@ let displayEntrees = function (listeEntrees) {
             })
         )
     );
-
     
     Promise.all(promises).then(() => {
         document.getElementById("entrees").innerHTML = entreesTemp({
@@ -41,17 +39,8 @@ let displayEntrees = function (listeEntrees) {
     }).catch(error => {
         console.error("Une erreur s'est produite lors du chargement des entrées : ", error);
     });
-    displayedList = listeEntrees;
 }
 
-let displayEntreesByDepartement = function (listeEntrees) {
-    listeEntrees.entrees.sort((a, b) => a.entree.nom > b.entree.nom)
-    document.getElementById("entrees").innerHTML = entreesTemp({
-        entree:listeEntrees.entrees,
-        //ajout de l'id pour chaque entree
-    });
-
-}
 let displayDepartements = function (listeDepartements) {
     let selectElement = document.getElementById("departement");
     listeDepartements.departements.sort((a, b) => a.departement.nom > b.departement.nom);

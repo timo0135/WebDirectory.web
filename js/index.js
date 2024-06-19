@@ -1,23 +1,23 @@
-import {loadEntreeComplet, loadEntreeCompletbylink, load} from "./loader";
+import {loadEntreeComplet, loadEntreeCompletbylink} from "./loader";
 import {displayEntrees,displayDepartements,displayEntreeComplet} from "./ui";
-import { loadByName, loadDepartements, loadEntreesByDepartement } from "./loader";
-import { basePathsApi } from "./const";
-export { fusedEntreesLists, isAscending}
+import { loadDepartements, loadEntreesByNameDepartement  } from "./loader";
+export { fusedEntreesLists, isAscending, getEntreeComplet, getEntreeCompletbylink}
 
 
 let isAscending = true;
 
+let init = function () {
+    document.getElementById('sortButton').addEventListener('click', function() {
+    isAscending = !isAscending;
+    fusedEntreesLists();
+    });
 
-
-
-let getEntrees = function (path) {
-    let entrees = load(basePathsApi+'entrees');
-    entrees.then(ent => {
-        ent.json().then( ent => {
-            displayEntrees(ent)
-        })
-    })
+    let searchBar = document.getElementById('search');
+    searchBar.addEventListener("input", (event) => {fusedEntreesLists(event)})
+    fusedEntreesLists()
+    getDepartement()
 }
+
 // Fonction qui récupère les départements grace au fonction loadDepartements et les affiche grace à displayDepartements
 let getDepartement = function () {
     let departements = loadDepartements();
@@ -32,52 +32,16 @@ let getDepartement = function () {
 let fusedEntreesLists = async  function (event) {
     let search = document.getElementById('search').value
     let departementId = document.getElementById('departement').value
-    //Récupère la liste des départements : 
-    let listDep;
 
-    let promises = []
-    let promisesJson = []
-    if (departementId == 0) {
-        promises.push(load(basePathsApi+'entrees').then( entrees => {
-            promisesJson.push(entrees.json().then(ent => {
-                listDep = ent
-            }))
-        }))
-    } else {
-        promises.push(loadEntreesByDepartement(departementId).then( ent => {
-            promisesJson.push(ent.json().then( ent => {
-                listDep = ent
-            }))
-        }
-        ))
-    }
-    //Récupération de la liste des entrées correspondant à la recherche
-    let listSearch
-    if (search === '') {
-        promises.push(load(basePathsApi+'entrees').then( ent => {
-            promisesJson.push(ent.json().then( ent => {
-                listSearch = ent
-            }))
-        }))
-    } else {
-        promises.push(loadByName(search).then( ent => {
-            promisesJson.push(ent.json().then( ent => {
-                listSearch = ent
-            }))
-        }))
-    } 
-    Promise.all(promises).then(() => {
-        Promise.all(promisesJson).then(() => {
-            listSearch.entrees = listSearch.entrees.filter(search => {
-                return listDep.entrees.some(dep => search.entree.nom == dep.entree.nom);
-            });
-            displayEntrees(listSearch);
+    loadEntreesByNameDepartement(departementId, search).then(list => {
+        list.json().then(list => {
+            displayEntrees(list)
         })
     })
-
 }
+
 // Fonction qui récupère les entrées grace au fonction loadEntrees et les affiche grace à displayEntrees
-export let getEntreeComplet = function (entreeId) {
+let getEntreeComplet = function (entreeId) {
     let entree = loadEntreeComplet(entreeId);
 
     entree.then(ent => {
@@ -87,7 +51,7 @@ export let getEntreeComplet = function (entreeId) {
     })
 }
 // Fonction qui récupère les entrées grace au fonction loadEntrees et les affiche grace à displayEntrees
-export let getEntreeCompletbylink = function (link) {
+let getEntreeCompletbylink = function (link) {
     let entree = loadEntreeCompletbylink(link);
 
     entree.then(ent => {
@@ -95,17 +59,6 @@ export let getEntreeCompletbylink = function (link) {
             displayEntreeComplet(ent)
         })
     })
-
-
 }
 
-document.getElementById('sortButton').addEventListener('click', function() {
-    isAscending = !isAscending;
-    this.textContent = isAscending ? 'Trier par ordre alphabétique ascendant' : 'Trier par ordre alphabétique descendant';
-    fusedEntreesLists();
-});
-
-let searchBar = document.getElementById('search');
-searchBar.addEventListener("input", (event) => {fusedEntreesLists(event)})
-getEntrees()
-getDepartement()
+init()
