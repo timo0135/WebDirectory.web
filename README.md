@@ -2,6 +2,8 @@
 
 Application web de Web Directory
 
+Toutes les fonctionnalitées demandées dans le sujet ont été mises en place 
+
 Pour l'utiliser de manière locale : 
 - Clonez le dépot
 - Ouvrez un terminal au niveau du fichier WebDirectory.web/index.js
