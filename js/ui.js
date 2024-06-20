@@ -13,14 +13,18 @@ const p5Template = document.querySelector('#displayFull').innerHTML;
 const entreeFull = Handlebars.compile(p5Template);
 
 let displayEntrees = function (listeEntrees) {
-    const promises = listeEntrees.entrees.map(entree =>
+    const promises = listeEntrees.entrees.map(entree => 
         load(racine + entree.links.self.href).then(response =>
             response.json().then(ent => {
                 entree.entree['img'] = racine + ent.links.image;
             })
         )
     );
-    
+
+    listeEntrees.entrees.map(entree => {
+        entree.entree.departement = entree.entree.departement.join(' / ')
+    })
+
     Promise.all(promises).then(() => {
         document.getElementById("entrees").innerHTML = entreesTemp({
                 // ajout d'un event listener pour chaque entree
@@ -71,10 +75,13 @@ let displayEntreeComplet = function (entreecomplet) {
     
    // get the image
     entreecomplet.entree.img = racine+entreecomplet.links.image
+
     entreecomplet.entree.numeros = [entreecomplet.entree.numeroTel1]
     if (entreecomplet.entree.numeroTel2 != null) {
         entreecomplet.entree.numeros.push(entreecomplet.entree.numeroTel2)
     }
+
+    entreecomplet.entree.departement = entreecomplet.entree.departement.join(' / ')
     document.getElementById("modal-text").innerHTML = entreeFull({
         entree:entreecomplet.entree
         //ajout de l'id pour chaque entree
